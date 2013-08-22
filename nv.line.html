@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta charset="utf-8">
+	<title>NV Line Charts</title>
+	<link rel="stylesheet" type="text/css" href="/css/nv.d3.css">
+
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="aight.min.js"></script>
+	<![endif]-->
+
+	<script type="text/javascript" src="/js/d3.js"></script>
+	<script type="text/javascript" src="/js/nv.core.js"></script>
+	<script type="text/javascript" src="/js/nv.utils.js"></script>
+	<script type="text/javascript" src="/js/nv.tooltip.js"></script>
+	<script type="text/javascript" src="/js/nv.axis.js"></script>
+	<script type="text/javascript" src="/js/nv.scatter.js"></script>
+	<script type="text/javascript" src="/js/nv.line.js"></script>
+	<script type="text/javascript" src="/js/nv.legend.js"></script>
+	<script type="text/javascript" src="/js/nv.lineChart.js"></script>
+
+	<script type="text/javascript" src="/data/percentile.mock.compare.js"></script>
+
+	<style type="text/css">
+		#chart svg {
+		  height: 400px;
+		}
+	</style>
+
+</head>
+<body>
+	<div id="chart">
+  		<svg></svg>
+	</div>
+	<script type="text/javascript">
+		nv.addGraph(function() {
+		  var chart = nv.models.lineChart().margin({left: 80}).
+				tooltipContent(function(key, x, y, e, graph) {
+					return '<h3>' + key + '</h3>' +
+							"<p>Mock " + x + ": " + y + " percentile</p>";
+				});
+
+		  chart.xAxis
+		      .axisLabel('Mock')
+		      .tickFormat(d3.format(',r'));
+
+		  chart.yAxis
+		      .axisLabel('Percentile')
+		      .tickFormat(d3.format('.02f'));
+
+		  d3.select('#chart svg')
+		      .datum(mockVsPercentileByUser(10, 3))
+		    .transition().duration(500)
+		      .call(chart);
+
+		  nv.utils.windowResize(chart.update);
+
+		  return chart;
+		});
+
+	</script>
+</body>
+</html>

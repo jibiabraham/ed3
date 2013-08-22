@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta charset="utf-8">
+	<title>Fisheye Distortion</title>
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
+
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="aight.min.js"></script>
+	<![endif]-->
+
+	<script type="text/javascript" src="/js/d3.js"></script>
+	<script type="text/javascript" src="/js/line.js"></script>
+	<script type="text/javascript" src="/js/legend.js"></script>
+	<script type="text/javascript" src="/data/percentile.mock.compare.js"></script>
+</head>
+<body>
+	<p id="example"></p>
+	<script type="text/javascript">
+		var chart = lineChart().
+			x(function(d){ return d.x; }).
+			y(function(d){ return d.y }), 
+
+			legends = legend();
+
+		d3.csv("/data/percentile.mock.csv", function(data) {
+			d3.select("#example")
+				.datum(mockVsPercentileByUser(10, 2))
+				.call(chart);
+
+		   	d3.select("#example").call(legends.chart(chart).keys("mock user abc def ghi"));;
+		});
+
+	</script>
+</body>
+</html>
