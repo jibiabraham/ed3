@@ -24,16 +24,23 @@
 	<script type="text/javascript" src="/data/percentile.mock.compare.js"></script>
 
 	<style type="text/css">
-		#chart svg {
+		.chart svg {
 		  height: 400px;
+		  width: 49%;
+		  float:left;
 		}
 	</style>
 
 </head>
 <body>
-	<div id="chart">
+	
+	<div id="chart1" class="chart">
   		<svg></svg>
 	</div>
+	<div id="chart2" class="chart">
+  		<svg></svg>
+	</div>
+
 	<script type="text/javascript">
 		nv.addGraph(function() {
 		  var chart = nv.models.lineChart().margin({left: 80}).
@@ -50,7 +57,7 @@
 		      .axisLabel('Percentile')
 		      .tickFormat(d3.format('.02f'));
 
-		  d3.select('#chart svg')
+		  d3.select('#chart1 svg')
 		      .datum(mockVsPercentileByUser(10, 3))
 		    .transition().duration(500)
 		      .call(chart);
@@ -60,6 +67,30 @@
 		  return chart;
 		});
 
+		nv.addGraph(function() {
+		  var chart = nv.models.lineChart().margin({left: 80}).
+				tooltipContent(function(key, x, y, e, graph) {
+					return '<h3>' + key + '</h3>' +
+							"<p>Mock " + x + ": " + y + " percentile</p>";
+				});
+
+		  chart.xAxis
+		      .axisLabel('Mock')
+		      .tickFormat(d3.format(',r'));
+
+		  chart.yAxis
+		      .axisLabel('Percentile')
+		      .tickFormat(d3.format('.02f'));
+
+		  d3.select('#chart2 svg')
+		      .datum(mockVsPercentileByUser(10, 2))
+		    .transition().duration(500)
+		      .call(chart);
+
+		  nv.utils.windowResize(chart.update);
+
+		  return chart;
+		});
 	</script>
 </body>
 </html>
