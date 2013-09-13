@@ -10,7 +10,7 @@
 		<script type="text/javascript" src="aight.min.js"></script>
 	<![endif]-->
 
-	<script type="text/javascript" src="/js/d3.js"></script>
+	<!--<script type="text/javascript" src="/js/d3.js"></script>
 	<script type="text/javascript" src="/js/nv.core.js"></script>
 	<script type="text/javascript" src="/js/nv.utils.js"></script>
 	<script type="text/javascript" src="/js/nv.tooltip.js"></script>
@@ -22,8 +22,10 @@
 	<script type="text/javascript" src="/js/nv.lineChart.js"></script>
 	<script type="text/javascript" src="/js/nv.discreteBar.js"></script>
 	<script type="text/javascript" src="/js/nv.discreteBarChart.js"></script>
+	<script type="text/javascript" src="/js/nv.multiBar.js"></script>
+	<script type="text/javascript" src="/js/nv.multiBarChart.js"></script>-->
 
-	<!--<script type="text/javascript" src="/dist/nv.ed3.min.js"></script>-->
+	<script type="text/javascript" src="/dist/nv.ed3.min.js"></script>
 	<script type="text/javascript" src="/data/percentile.mock.compare.js"></script>
 
 	<style type="text/css">
@@ -40,60 +42,58 @@
 	<div id="chart1" class="chart">
   		<svg></svg>
 	</div>
-	<div id="chart2" class="chart">
-  		<svg></svg>
-	</div>
 
 	<script type="text/javascript">
 		nv.addGraph(function() {
-		  var chart = nv.models.lineChart().margin({left: 80}).
-				tooltipContent(function(key, x, y, e, graph) {
-					return '<h3>' + key + '</h3>' +
-							"<p>Mock " + x + ": " + y + " percentile</p>";
-				});
+			var chart = nv.models.multiBarChart();
 
-		  chart.xAxis
-		      .axisLabel('Mock')
-		      .tickFormat(d3.format(',r'));
+			chart.xAxis
+			.tickFormat(d3.format(',f'));
 
-		  chart.yAxis
-		      .axisLabel('Percentile')
-		      .tickFormat(d3.format('.02f'));
+			chart.yAxis
+			.tickFormat(d3.format(',.1f'));
 
-		  d3.select('#chart1 svg')
-		      .datum(mockVsPercentileByUser(10, 3))
-		    .transition().duration(500)
-		      .call(chart);
+			d3.select('#chart1 svg')
+			.datum(exampleData())
+			.transition().duration(500).call(chart);
 
-		  nv.utils.windowResize(chart.update);
+			nv.utils.windowResize(chart.update);
 
-		  return chart;
+			return chart;
 		});
+ 
 
-		nv.addGraph(function() {
-		  var chart = nv.models.lineChart().margin({left: 80}).
-				tooltipContent(function(key, x, y, e, graph) {
-					return '<h3>' + key + '</h3>' +
-							"<p>Mock " + x + ": " + y + " percentile</p>";
+		function exampleData() {
+			return stream_layers(3,10+Math.random()*100,.1).map(function(data, i) {
+				return {
+					key: 'Stream' + i,
+					values: data
+				};
+			});
+		}
+
+		function stream_layers(n, m, o) {
+			if (arguments.length < 3) o = 0;
+			function bump(a) {
+				var x = 1 / (.1 + Math.random()),
+				y = 2 * Math.random() - .5,
+				z = 10 / (.1 + Math.random());
+				for (var i = 0; i < m; i++) {
+					var w = (i / m - y) * z;
+					a[i] += x * Math.exp(-w * w);
+				}
+			}
+			return d3.range(n).map(function() {
+				var a = [], i;
+				for (i = 0; i < m; i++) a[i] = o + o * Math.random();
+					for (i = 0; i < 5; i++) bump(a);
+						return a.map(stream_index);
 				});
+		}
 
-		  chart.xAxis
-		      .axisLabel('Mock')
-		      .tickFormat(d3.format(',r'));
-
-		  chart.yAxis
-		      .axisLabel('Percentile')
-		      .tickFormat(d3.format('.02f'));
-
-		  d3.select('#chart2 svg')
-		      .datum(mockVsPercentileByUser(10, 2))
-		    .transition().duration(500)
-		      .call(chart);
-
-		  nv.utils.windowResize(chart.update);
-
-		  return chart;
-		});
+		function stream_index(d, i) {
+			return {x: i, y: Math.max(0, d)};
+		}
 	</script>
 </body>
 </html>

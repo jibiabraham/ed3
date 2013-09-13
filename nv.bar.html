@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta charset="utf-8">
+	<title>NV Line Charts</title>
+	<link rel="stylesheet" type="text/css" href="/css/nv.d3.css">
+
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="aight.min.js"></script>
+		<![endif]-->
+
+	<!--<script type="text/javascript" src="/js/d3.js"></script>
+	<script type="text/javascript" src="/js/nv.core.js"></script>
+	<script type="text/javascript" src="/js/nv.utils.js"></script>
+	<script type="text/javascript" src="/js/nv.tooltip.js"></script>
+	<script type="text/javascript" src="/js/nv.interactiveLayer.js"></script>
+	<script type="text/javascript" src="/js/nv.axis.js"></script>
+	<script type="text/javascript" src="/js/nv.scatter.js"></script>
+	<script type="text/javascript" src="/js/nv.line.js"></script>
+	<script type="text/javascript" src="/js/nv.legend.js"></script>
+	<script type="text/javascript" src="/js/nv.lineChart.js"></script>
+	<script type="text/javascript" src="/js/nv.discreteBar.js"></script>
+	<script type="text/javascript" src="/js/nv.discreteBarChart.js"></script>-->
+
+	<script type="text/javascript" src="/dist/nv.ed3.min.js"></script> 
+	<script type="text/javascript" src="/data/percentile.mock.compare.js"></script>
+
+	<style type="text/css">
+	.chart svg {
+		height: 400px;
+		width: 49%;
+		float:left;
+	}
+	</style>
+
+</head>
+<body>
+	
+	<div id="chart1" class="chart">
+		<svg></svg>
+	</div>
+	<div id="chart2" class="chart">
+		<svg></svg>
+	</div>
+
+	<script type="text/javascript">
+		nv.addGraph(function() {
+			var chart = nv.models.discreteBarChart()
+			.x(function(d) { return d.label })
+			.y(function(d) { return d.value })
+			.staggerLabels(true)
+			.tooltips(false)
+			.showValues(true)
+
+			d3.select('#chart1 svg')
+			.datum(exampleData())
+			.transition().duration(500)
+			.call(chart);
+
+			nv.utils.windowResize(chart.update);
+
+			return chart;
+		});
+
+		function exampleData() {
+			return  [ 
+			{
+				key: "Cumulative Return",
+				values: [
+				{ 
+					"label" : "CDS / Options" ,
+					"value" : -29.765957771107
+				} , 
+				{ 
+					"label" : "Cash" , 
+					"value" : 0
+				} , 
+				{ 
+					"label" : "Corporate Bonds" , 
+					"value" : 32.807804682612
+				} , 
+				{ 
+					"label" : "Equity" , 
+					"value" : 196.45946739256
+				} , 
+				{ 
+					"label" : "Index Futures" ,
+					"value" : 0.19434030906893
+				} , 
+				{ 
+					"label" : "Options" , 
+					"value" : -98.079782601442
+				} , 
+				{ 
+					"label" : "Preferred" , 
+					"value" : -13.925743130903
+				} , 
+				{ 
+					"label" : "Not Available" , 
+					"value" : -5.1387322875705
+				}
+				]
+			}
+			];
+		}
+	</script>
+</body>
+</html>
