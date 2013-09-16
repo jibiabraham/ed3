@@ -12,7 +12,8 @@ module.exports = function(grunt) {
           "js/d3.js", "js/nv.core.js", "js/nv.utils.js", "js/nv.tooltip.js",
           "js/nv.interactiveLayer.js", "js/nv.legend.js", "js/nv.scatter.js", "js/nv.axis.js",
           "js/nv.line.js", "js/nv.lineChart.js", "js/nv.discreteBar.js", "js/nv.discreteBarChart.js",
-          "js/nv.multiBar.js", "js/nv.multiBarChart.js"
+          "js/nv.multiBar.js", "js/nv.multiBarChart.js",
+          "js/nv.historicalBar.js", "js/nv.linePlusBarChart.js"
         ],
         dest: 'dist/nv.<%= pkg.name %>.js'
       }
